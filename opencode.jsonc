@@ -18,6 +18,10 @@
           "limit": {
             "context": 131072,
             "output": 32768
+          },
+          "options": {
+            "frequency_penalty": 0.0,
+            "presence_penalty": 0.0
           }
         },
         "Kimi-K2.5": {
@@ -25,6 +29,9 @@
           "limit": {
             "context": 131072,
             "output": 32768
+          },
+          "options": {
+            "top_p": 0.8
           }
         },
         "Qwen3.5-35B-A3B": {
@@ -32,6 +39,9 @@
           "limit": {
             "context": 131072,
             "output": 32768
+          },
+          "options": {
+            "top_p": 0.8
           }
         },
         "Qwen3.5-397B-A17B-FP8": {
@@ -39,6 +49,9 @@
           "limit": {
             "context": 131072,
             "output": 32768
+          },
+          "options": {
+            "top_p": 0.8
           }
         },
         "dall-e-3": {
