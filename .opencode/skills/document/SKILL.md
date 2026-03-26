@@ -1,17 +1,8 @@
 ---
 name: document
 description: |
-  Markdown, README ve teknik dokumantasyon dosyalari icin
-  koruma, guncelleme ve format kurallari.
-  Dokumantasyon uzman modeli bu dosyalari agent modunda duzenler.
-globs:
-  - "**/*.md"
-  - "**/README*"
-  - "**/CHANGELOG*"
-  - "**/docs/**/*"
-  - "**/*.rst"
-  - "**/*.txt"
-alwaysApply: false
+  Markdown, README, CHANGELOG ve teknik dokumantasyon dosyalarinin
+  koruma, guncelleme ve format kurallari icin kullan.
 ---
 
 # DOKUMANTASYON KURALLARI

@@ -1,14 +1,9 @@
 ---
 name: ai-toolkit
 description: |
-  Acik kaynak AI kodlama asistani kurulumu, konfigurasyonu ve optimizasyonu icin
-  uzman rehber. Ollama, vLLM, LM Studio, llama.cpp, OpenCode, Aider, Continue.dev,
-  Tabby, Open Interpreter gibi araclar. System prompt, agent prompt, base prompt,
-  rules dosyasi, tool use konfigurasyonu, model secimi, quantization, context
-  tuning ve Codex/Claude Code/Copilot seviyesinde asistan olusturma.
-  Use when: setting up open-source AI tools, writing system prompts for coding
-  assistants, configuring AI agent pipelines, optimizing model parameters.
-alwaysApply: false
+  Acik kaynak AI kodlama asistani kurulumu, model secimi, system prompt
+  muhendisligi, agent konfigurasyonu ve OpenCode/Aider/Continue.dev
+  optimizasyonu icin kullan.
 ---
 
 # ACIK KAYNAK AI KODLAMA ASISTANI KURULUM VE KONFIGURASYON REHBERI

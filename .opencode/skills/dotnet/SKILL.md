@@ -1,20 +1,8 @@
 ---
 name: dotnet
 description: |
-  C#, .NET, WPF, WinForms, EF Core ve modern .NET icin
-  kod stili, async/await, MVVM, DI ve anti-pattern kurallari.
-globs:
-  - "**/*.cs"
-  - "**/*.xaml"
-  - "**/*.csproj"
-  - "**/*.sln"
-  - "**/ViewModels/**/*"
-  - "**/Views/**/*"
-  - "**/Models/**/*"
-  - "**/Services/**/*"
-  - "**/Controllers/**/*"
-  - "**/Migrations/**/*"
-alwaysApply: false
+  C#, .NET, WPF/MVVM, EF Core, async/await, DI, xUnit test ve modern
+  .NET gelistirme kurallari icin kullan.
 ---
 
 # C# .NET KURALLARI

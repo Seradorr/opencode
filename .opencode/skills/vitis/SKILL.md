@@ -1,22 +1,8 @@
 ---
 name: vitis
 description: |
-  Xilinx Vitis, bare-metal C/C++ ve BSP gelistirme icin
-  kod stili, driver kullanimi, DMA, interrupt, boot ve anti-pattern kurallari.
-globs:
-  - "**/*.c"
-  - "**/*.h"
-  - "**/src/**/*.c"
-  - "**/src/**/*.h"
-  - "**/bsp/**/*"
-  - "**/platform/**/*"
-  - "**/ps7_cortexa9_0/**/*"
-  - "**/psu_cortexa53_0/**/*"
-  - "**/psu_cortexr5_0/**/*"
-  - "**/Makefile"
-  - "**/CMakeLists.txt"
-  - "**/lscript.ld"
-alwaysApply: false
+  Xilinx Vitis bare-metal C/C++, BSP, DMA, interrupt, PS-PL haberlesme,
+  driver pattern, cache coherency ve linker script kurallari icin kullan.
 ---
 
 # VITIS EMBEDDED C KURALLARI

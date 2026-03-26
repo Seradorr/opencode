@@ -1,20 +1,8 @@
 ---
 name: python
 description: |
-  Python scripting, otomasyon, async, testing ve veri isleme icin
-  PEP 8, type hints, pytest ve anti-pattern kurallari.
-globs:
-  - "**/*.py"
-  - "**/requirements.txt"
-  - "**/pyproject.toml"
-  - "**/setup.py"
-  - "**/setup.cfg"
-  - "**/Pipfile"
-  - "**/poetry.lock"
-  - "**/tox.ini"
-  - "**/pytest.ini"
-  - "**/.flake8"
-alwaysApply: false
+  Python scripting, PEP 8 kod stili, type hints, pytest, asyncio, CLI
+  araclari ve veri isleme kurallari icin kullan.
 ---
 
 # PYTHON KURALLARI

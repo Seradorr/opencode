@@ -1,21 +1,9 @@
 ---
 name: fpga
 description: |
-  VHDL, Verilog, SystemVerilog ve Vivado icin
-  kod stili, anti-pattern, CDC, AXI, timing ve testbench kurallari.
-globs:
-  - "**/*.vhd"
-  - "**/*.vhdl"
-  - "**/*.v"
-  - "**/*.sv"
-  - "**/*.svh"
-  - "**/*.xdc"
-  - "**/*.tcl"
-  - "**/hdl/**/*"
-  - "**/rtl/**/*"
-  - "**/ip/**/*"
-  - "**/constraints/**/*"
-alwaysApply: false
+  VHDL, Verilog, SystemVerilog tasarim kurallari, Vivado sentez akisi,
+  CDC, AXI, FSM, timing closure, testbench ve XDC constraint dosyalari
+  icin kullan.
 ---
 
 # FPGA RTL KURALLARI

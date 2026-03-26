@@ -15,28 +15,34 @@
       "models": {
         "GLM-4.7-FP8": {
           "name": "GLM Hard",
-          "max_tokens": 32768,
-          "frequency_penalty": 0.0,
-          "presence_penalty": 0.0
+          "limit": {
+            "context": 131072,
+            "output": 32768
+          }
         },
         "Kimi-K2.5": {
           "name": "Kimi",
-          "max_tokens": 32768,
-          "top_p": 0.8
+          "limit": {
+            "context": 131072,
+            "output": 32768
+          }
         },
         "Qwen3.5-35B-A3B": {
           "name": "Qwen Fast",
-          "max_tokens": 32768,
-          "top_p": 0.8
+          "limit": {
+            "context": 131072,
+            "output": 32768
+          }
         },
         "Qwen3.5-397B-A17B-FP8": {
           "name": "Qwen Hard",
-          "max_tokens": 32768,
-          "top_p": 0.8
+          "limit": {
+            "context": 131072,
+            "output": 32768
+          }
         },
         "dall-e-3": {
-          "name": "ImageGen",
-          "top_p": 1.0
+          "name": "ImageGen"
         }
       },
       "options": {
@@ -56,7 +62,7 @@
   },
   "agent": {
     "build": {
-      "description": "Full-stack geliştirme uzmanı. FPGA (VHDL/Verilog), Embedded C/C++, Python, C#/.NET, teknik dokümantasyon ve modern yazılım geliştirme pratiklerinde uzman. Kod yazar, debug eder ve mimari kararlar alır.",
+      "description": "Ana geliştirme ajanı. Kod yazar, debug eder, dosya düzenler. Tam araç erişimi.",
       "mode": "primary",
       "model": "openai2/Qwen3.5-397B-A17B-FP8",
       "temperature": 0.7,
@@ -67,7 +73,7 @@
       }
     },
     "plan": {
-      "description": "Sistem mimarisi ve analiz uzmanı. Karmaşık projeleri yapılandırır, teknik gereksinimleri analiz eder, mimari öneriler sunar. RTL tasarım, gömülü sistemler, uygulama geliştirme ve entegrasyon projelerinde planlama yapar.",
+      "description": "Analiz ve planlama ajanı. Kod yazmadan mimari analiz eder, uygulama planı sunar.",
       "mode": "primary",
       "model": "openai2/Qwen3.5-397B-A17B-FP8",
       "temperature": 0.6,
@@ -78,7 +84,7 @@
       }
     },
     "review": {
-      "description": "Kod kalitesi ve teknik inceleme uzmanı. VHDL/Verilog, C/C++, C#, Python ve dokümantasyon için best practice, anti-pattern, güvenlik ve performans analizi yapar.",
+      "description": "Kod inceleme ajanı. Salt-okunur analiz, anti-pattern ve güvenlik tespiti yapar.",
       "mode": "subagent",
       "model": "openai2/Qwen3.5-397B-A17B-FP8",
       "temperature": 0.3,
@@ -95,7 +101,7 @@
       }
     },
     "refactor": {
-      "description": "Kod optimizasyon ve yeniden yapılandırma uzmanı. Legacy kodu modernize eder, teknik borcu azaltır, FPGA timing closure, gömülü C optimizasyonu, .NET async/await patternleri ve Python performans iyileştirmeleri yapar.",
+      "description": "Kod iyileştirme ajanı. Davranışı bozmadan mevcut kodu modernize eder ve temizler.",
       "mode": "subagent",
       "model": "openai2/Qwen3.5-397B-A17B-FP8",
       "temperature": 0.7,
@@ -106,7 +112,7 @@
       }
     },
     "docs": {
-      "description": "Teknik dokümantasyon ve bilgi yönetimi uzmanı. FPGA IP dokümantasyonu, gömülü C API referansları, C#/.NET kütüphane dokümantasyonu, Python modül dokümanları, README dosyaları ve teknik spesifikasyonlar yazar.",
+      "description": "Teknik dokümantasyon ajanı. Koddan okunabilir ve hedef kitleye uygun doküman üretir.",
       "mode": "subagent",
       "model": "openai2/Kimi-K2.5",
       "temperature": 0.6,
@@ -121,7 +127,7 @@
       }
     },
     "test": {
-      "description": "Test mühendisliği ve kalite güvencesi uzmanı. FPGA testbenchleri (VHDL/Verilog), gömülü C unit testleri, C# xUnit/NUnit testleri, Python pytest/modüller ve entegrasyon testleri yazar.",
+      "description": "Test yazma ajanı. Birim, entegrasyon ve testbench testleri üretir.",
       "mode": "subagent",
       "model": "openai2/GLM-4.7-FP8",
       "temperature": 0.4,
@@ -132,7 +138,7 @@
       }
     },
     "fast": {
-      "description": "Hızlı kod yazma ve basit görevler için optimize edilmiş hafif model. Günlük kodlama, hızlı debug, basit refactor işlemleri için kullanılır.",
+      "description": "Hızlı görevler için hafif ajan. Basit kodlama, kısa sorular, snippet üretimi.",
       "mode": "primary",
       "model": "openai2/Qwen3.5-35B-A3B",
       "temperature": 0.7,
