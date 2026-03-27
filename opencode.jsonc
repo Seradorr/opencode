@@ -7,7 +7,7 @@
   },
   "disabled_providers": [],
   "default_agent": "build",
-  "small_model": "openai2/Qwen3.5-35B-A3B",
+  "small_model": "openai2/Qwen3.5-35B-A3B-FP8",
   "provider": {
     "openai2": {
       "name": "CustomModels",
@@ -35,11 +35,11 @@
             "top_p": 1.0
           }
         },
-        "Qwen3.5-35B-A3B": {
+        "Qwen3.5-35B-A3B-FP8": {
           "name": "Qwen Fast",
           "limit": {
-            "context": 131072,
-            "output": 32768
+            "context": 262144,
+            "output": 65536
           },
           "options": {
             "top_p": 1.0
@@ -48,8 +48,8 @@
         "Qwen3.5-397B-A17B-FP8": {
           "name": "Qwen Hard",
           "limit": {
-            "context": 131072,
-            "output": 32768
+            "context": 262144,
+            "output": 65536
           },
           "options": {
             "top_p": 1.0
@@ -154,7 +154,7 @@
     "fast": {
       "description": "Hızlı görevler için hafif ajan. Basit kodlama, kısa sorular, snippet üretimi.",
       "mode": "primary",
-      "model": "openai2/Qwen3.5-35B-A3B",
+      "model": "openai2/Qwen3.5-35B-A3B-FP8",
       "temperature": 0.7,
       "prompt": "{file:./.opencode/agents/fast.md}",
       "permission": {

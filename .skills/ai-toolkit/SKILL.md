@@ -47,14 +47,16 @@ konusunda uzmanlik saglar.
 
 ### Mevcut Modeller (OpenAI Uyumlu API)
 
-Tum modeller OpenAI uyumlu API uzerinden erisime aciktir. Max context 32K ile kullanilir.
+Tum modeller OpenAI uyumlu API uzerinden erisime aciktir. Qwen modeller 256K
+context ve 64K output ile kullanilir; diger model limitleri provider tanimina
+gore ayarlanir.
 
 | MODEL | CONTEXT | OZELLIKLER | EN IYI ICIN |
 |-------|---------|------------|-------------|
-| Qwen3.5-397B-A17B-FP8 | 128K | Thinking, Tool Use, Image | En zor gorevler, mimari analiz, plan |
+| Qwen3.5-397B-A17B-FP8 | 256K / 64K output | Thinking, Tool Use, Image | En zor gorevler, mimari analiz, plan |
 | Kimi-K2.5 | 128K | Thinking, Tool Use, Image | Reasoning, uzun metin, dokumantasyon |
 | GLM-4.7-FP8 | 128K | Thinking, Tool Use | Alternatif reasoning, test yazimi |
-| Qwen3.5-35B-A3B | 128K | Thinking, Tool Use, Image | Hizli cevap, basit isler, gunluk kodlama |
+| Qwen3.5-35B-A3B-FP8 | 256K / 64K output | Thinking, Tool Use, Image | Hizli cevap, basit isler, gunluk kodlama |
 
 ### Agent-Model Eslestirme
 
@@ -66,18 +68,19 @@ Tum modeller OpenAI uyumlu API uzerinden erisime aciktir. Max context 32K ile ku
 | refactor | Qwen3.5-397B-A17B-FP8 | Buyuk resmi gorme, optimizasyon |
 | docs | Kimi-K2.5 | Uzun metin uretimi, tutarli cikti |
 | test | GLM-4.7-FP8 | Reasoning ile edge-case tespiti |
-| fast | Qwen3.5-35B-A3B | Hizli, dusuk latency |
+| fast | Qwen3.5-35B-A3B-FP8 | Hizli, dusuk latency |
 
 ### Context Length Stratejisi
 
-Max context 32K olarak kullanilir. Modelin tum 128K context'ini kullanmak
-tokenmaliyetini arttirir ve hizi dusurur.
+Qwen modellerde 256K context mevcuttur. Ancak her istekte tum pencereyi
+doldurmak maliyeti arttirir ve hizi dusurur. Varsayilan kullanimda ilgili
+baglam kadar pencere ayrilmali, gerekli oldugunda genisletilmelidir.
 
 | SENARYO | ONERILEN CONTEXT | NEDEN |
 |---------|------------------|-------|
 | Tekli dosya chat | 8K-16K | Cogu dosya yeterli |
-| Multi-dosya agent | 32K | Buyuk codebase, standart kullanim |
-| Ozel analiz | 64K-128K | Gerektiginde model limiti arttirilabilir |
+| Multi-dosya agent | 32K-64K | Buyuk codebase, standart kullanim |
+| Ozel analiz | 64K-256K | Gerektiginde model limiti arttirilabilir |
 
 ---
 
@@ -117,18 +120,33 @@ tokenmaliyetini arttirir ve hizi dusurur.
   "$schema": "https://opencode.ai/config.json",
   "compaction": {
     "auto": true,
-    "prune": true,       // Eski tool ciktilarini budayarak token tasarrufu
-    "reserved": 10000    // Compaction sirasinda tasmaya karsi tampon
+    "prune": true,
+    "reserved": 10000
   },
   "provider": {
     "custom": {
       "name": "CustomModels",
       "npm": "@ai-sdk/openai-compatible",
       "models": {
-        "Qwen3.5-397B-A17B-FP8": { "name": "Qwen Hard", "max_tokens": 32768, "top_p": 0.8 },
-        "Kimi-K2.5": { "name": "Kimi", "max_tokens": 32768, "top_p": 0.8 },
-        "GLM-4.7-FP8": { "name": "GLM Hard", "max_tokens": 32768 },
-        "Qwen3.5-35B-A3B": { "name": "Qwen Fast", "max_tokens": 32768, "top_p": 0.8 }
+        "Qwen3.5-397B-A17B-FP8": {
+          "name": "Qwen Hard",
+          "limit": { "context": 262144, "output": 65536 },
+          "options": { "top_p": 0.8 }
+        },
+        "Kimi-K2.5": {
+          "name": "Kimi",
+          "limit": { "context": 131072, "output": 32768 },
+          "options": { "top_p": 0.8 }
+        },
+        "GLM-4.7-FP8": {
+          "name": "GLM Hard",
+          "limit": { "context": 131072, "output": 32768 }
+        },
+        "Qwen3.5-35B-A3B-FP8": {
+          "name": "Qwen Fast",
+          "limit": { "context": 262144, "output": 65536 },
+          "options": { "top_p": 0.8 }
+        }
       },
       "options": {
         "baseURL": "https://api.example.com/v1"
@@ -163,7 +181,7 @@ tokenmaliyetini arttirir ve hizi dusurur.
       "tools": { "all": true }
     },
     "fast": {
-      "model": "custom/Qwen3.5-35B-A3B",
+      "model": "custom/Qwen3.5-35B-A3B-FP8",
       "temperature": 0.7,
       "tools": { "all": true }
     }
@@ -283,7 +301,7 @@ opencode
 // Continue.dev ayarlarinda OpenAI uyumlu API'yi ekle:
 // Provider: OpenAI Compatible
 // Base URL: https://api.example.com/v1
-// Model: Qwen3.5-397B-A17B-FP8 veya Qwen3.5-35B-A3B
+// Model: Qwen3.5-397B-A17B-FP8 veya Qwen3.5-35B-A3B-FP8
 ```
 
 ---
@@ -305,7 +323,7 @@ opencode
 ### Model Strateji
 
 ```
-Qwen3.5-35B-A3B   → Hizli cevap, basit isler, gunluk kodlama
+Qwen3.5-35B-A3B-FP8   → Hizli cevap, basit isler, gunluk kodlama
 GLM-4.7-FP8       → Test yazma, reasoning gerektiren edge-case analizi
 Kimi-K2.5         → Uzun metin, dokumantasyon, derin reasoning
 Qwen3.5-397B      → Karmasik kodlama, mimari kararlar, ana agent
@@ -320,17 +338,8 @@ Qwen3.5-397B      → Karmasik kodlama, mimari kararlar, ana agent
 ```jsonc
 {
   "tools": {
-    "all": true          // Tum araclari etkinlestir
+    "all": true
   }
-  // veya secici:
-  // "tools": {
-  //   "read": true,
-  //   "write": true,
-  //   "bash": true,
-  //   "glob": true,
-  //   "grep": true,
-  //   "fetch": false    // Ag erisimi kapat
-  // }
 }
 ```
 
