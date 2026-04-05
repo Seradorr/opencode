@@ -1,166 +1,168 @@
 {
   "$schema": "https://opencode.ai/config.json",
+
+  "model": "openai2/Qwen3.5-397B-A17B-FP8",
+  "small_model": "openai2/Qwen3.5-35B-A3B-FP8",
+
   "compaction": {
     "auto": true,
     "prune": true,
     "reserved": 10000
   },
-  "disabled_providers": [],
-  "default_agent": "build",
-  "small_model": "openai2/Qwen3.5-35B-A3B-FP8",
+
+  "enabled_providers": ["openai2"],
+
   "provider": {
     "openai2": {
       "name": "CustomModels",
       "npm": "@ai-sdk/openai-compatible",
+      "options": {
+        // Replace with your real endpoint before use.
+        "baseURL": "https://api.example.com/v1",
+        // Replace with your real API key before use.
+        "apiKey": "REPLACE_WITH_REAL_API_KEY"
+      },
       "models": {
-        "GLM-4.7-FP8": {
-          "name": "GLM Hard",
+        "Qwen3.5-397B-A17B-FP8": {
+          "name": "Qwen 3.5 397B",
+          "reasoning": true,
+          "tool_call": true,
           "limit": {
-            "context": 131072,
-            "output": 32768
-          },
-          "options": {
-            "frequency_penalty": 0.2,
-            "presence_penalty": 0.1,
-            "top_p": 1.0
-          }
-        },
-        "Kimi-K2.5": {
-          "name": "Kimi",
-          "limit": {
-            "context": 131072,
-            "output": 32768
-          },
-          "options": {
-            "top_p": 1.0
+            "context": 262144,
+            "output": 65536
           }
         },
         "Qwen3.5-35B-A3B-FP8": {
-          "name": "Qwen Fast",
+          "name": "Qwen 3.5 35B",
+          "reasoning": true,
+          "tool_call": true,
           "limit": {
             "context": 262144,
             "output": 65536
-          },
-          "options": {
-            "top_p": 1.0
           }
         },
-        "Qwen3.5-397B-A17B-FP8": {
-          "name": "Qwen Hard",
+        "Kimi-K2.5": {
+          "name": "Kimi K2.5",
+          "reasoning": true,
+          "tool_call": true,
+          "temperature": false,
+          "limit": {
+            "context": 262144,
+            "output": 32768
+          }
+        },
+        "GLM-4.7-FP8": {
+          "name": "GLM 4.7",
+          "reasoning": true,
+          "tool_call": true,
+          "limit": {
+            "context": 131072,
+            "output": 32768
+          }
+        },
+        "Qwen3-Next-80B-A3B-Instruct": {
+          "name": "Qwen 3 Next 80B",
+          "tool_call": true,
           "limit": {
             "context": 262144,
             "output": 65536
-          },
-          "options": {
-            "top_p": 1.0
           }
         },
-        "dall-e-3": {
-          "name": "ImageGen"
+        "Qwen3-30B-A3B-Instruct-2507": {
+          "name": "Qwen 3 30B Instruct",
+          "tool_call": true,
+          "limit": {
+            "context": 262144,
+            "output": 65536
+          }
+        },
+        "Qwen3-Coder-30B-A3B-Instruct": {
+          "name": "Qwen 3 Coder 30B",
+          "tool_call": true,
+          "limit": {
+            "context": 32000,
+            "output": 8192
+          }
+        },
+        "openai/gpt-oss-120b": {
+          "name": "GPT OSS 120B",
+          "reasoning": true,
+          "tool_call": true,
+          "limit": {
+            "context": 131072,
+            "output": 32768
+          }
+        },
+        "google/gemma-3-27b-it": {
+          "name": "Gemma 3 27B",
+          "limit": {
+            "context": 32000,
+            "output": 8192
+          }
         }
-      },
-      "options": {
-        "baseURL": "https://api.example.com/v1"
       }
     }
   },
-  "instructions": ["./.opencode/*.md"],
+
+  "instructions": ["./instructions/*.md"],
+
   "permission": {
+    "edit": "allow",
     "bash": {
       "*": "allow",
-      "rm -rf *": "ask",
-      "git push*": "ask",
-      "git reset --hard*": "ask",
-      "git clean*": "ask"
-    }
+      "git commit*": "ask",
+      "git push*": "ask"
+    },
+    "webfetch": "deny",
+    "external_directory": "ask"
   },
+
+  "watcher": {
+    "ignore": [
+      ".git/**",
+      "node_modules/**",
+      "dist/**",
+      "build/**",
+      "bin/**",
+      "obj/**",
+      ".venv/**",
+      "__pycache__/**",
+      "coverage/**"
+    ]
+  },
+
+  "share": "disabled",
+  "autoupdate": false,
+
   "agent": {
     "build": {
-      "description": "Ana geliştirme ajanı. Kod yazar, debug eder, dosya düzenler. Tam araç erişimi.",
+      "description": "Primary implementation agent for coding, debugging, and file edits.",
       "mode": "primary",
       "model": "openai2/Qwen3.5-397B-A17B-FP8",
-      "temperature": 0.7,
-      "prompt": "{file:./.opencode/agents/build.md}",
-      "permission": {
-        "edit": "allow",
-        "bash": "allow"
-      }
+      "temperature": 0.25,
+      "prompt": "{file:./prompts/build.md}"
     },
     "plan": {
-      "description": "Analiz ve planlama ajanı. Kod yazmadan mimari analiz eder, uygulama planı sunar.",
+      "description": "Primary planning agent for architecture, repo analysis, and decision-complete plans.",
       "mode": "primary",
-      "model": "openai2/Qwen3.5-397B-A17B-FP8",
-      "temperature": 0.6,
-      "prompt": "{file:./.opencode/agents/plan.md}",
-      "permission": {
-        "edit": "ask",
-        "bash": "ask"
-      }
-    },
-    "review": {
-      "description": "Kod inceleme ajanı. Salt-okunur analiz, anti-pattern ve güvenlik tespiti yapar.",
-      "mode": "subagent",
-      "model": "openai2/Qwen3.5-397B-A17B-FP8",
-      "temperature": 0.3,
-      "prompt": "{file:./.opencode/agents/review.md}",
-      "permission": {
-        "edit": "deny",
-        "bash": {
-          "*": "deny",
-          "grep *": "allow",
-          "git diff*": "allow",
-          "git log*": "allow",
-          "git show*": "allow"
-        }
-      }
-    },
-    "refactor": {
-      "description": "Kod iyileştirme ajanı. Davranışı bozmadan mevcut kodu modernize eder ve temizler.",
-      "mode": "subagent",
-      "model": "openai2/Qwen3.5-397B-A17B-FP8",
-      "temperature": 0.7,
-      "prompt": "{file:./.opencode/agents/refactor.md}",
-      "permission": {
-        "edit": "allow",
-        "bash": "allow"
-      }
-    },
-    "docs": {
-      "description": "Teknik dokümantasyon ajanı. Koddan okunabilir ve hedef kitleye uygun doküman üretir.",
-      "mode": "subagent",
       "model": "openai2/Kimi-K2.5",
-      "temperature": 0.6,
-      "prompt": "{file:./.opencode/agents/docs.md}",
+      "prompt": "{file:./prompts/plan.md}",
       "permission": {
-        "edit": "allow",
-        "bash": {
-          "*": "deny",
-          "grep *": "allow",
-          "git log*": "allow"
-        }
+        "edit": "deny"
       }
     },
-    "test": {
-      "description": "Test yazma ajanı. Birim, entegrasyon ve testbench testleri üretir.",
+    "explore": {
+      "description": "Read-only exploration subagent for broad repo scans and fact gathering.",
       "mode": "subagent",
       "model": "openai2/GLM-4.7-FP8",
-      "temperature": 0.4,
-      "prompt": "{file:./.opencode/agents/test.md}",
+      "temperature": 0.2,
+      "prompt": "{file:./prompts/explore.md}",
       "permission": {
-        "edit": "allow",
-        "bash": "allow"
+        "edit": "deny"
       }
     },
-    "fast": {
-      "description": "Hızlı görevler için hafif ajan. Basit kodlama, kısa sorular, snippet üretimi.",
-      "mode": "primary",
-      "model": "openai2/Qwen3.5-35B-A3B-FP8",
-      "temperature": 0.7,
-      "prompt": "{file:./.opencode/agents/fast.md}",
-      "permission": {
-        "edit": "allow",
-        "bash": "allow"
-      }
+    "general": {
+      "disable": true
     }
   }
 }
